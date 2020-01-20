@@ -29,16 +29,6 @@ spec:
         - name: TLSVERIFY
           value: "false"
 
-    - name: apply-api-manifests
-      taskRef:
-        name: apply-manifests
-      resources:
-        inputs:
-          - name: source
-            resource: api-repo
-      runAfter:
-        - build-api
-
     - name: update-api-image
       taskRef:
         name: update-deployment
@@ -50,7 +40,7 @@ spec:
         - name: deployment
           value: "api"
       runAfter:
-        - apply-api-manifests
+        - build-api
 
     - name: build-ui
       taskRef:
@@ -67,17 +57,6 @@ spec:
         - name: TLSVERIFY
           value: "false"
 
-    - name: apply-ui-manifests
-      taskRef:
-        name: apply-manifests
-      resources:
-        inputs:
-          - name: source
-            resource: ui-repo
-      runAfter:
-        - build-ui
-        - update-api-image
-
     - name: update-ui-image
       taskRef:
         name: update-deployment
@@ -89,4 +68,4 @@ spec:
         - name: deployment
           value: "ui"
       runAfter:
-        - apply-ui-manifests
+        - build-ui
